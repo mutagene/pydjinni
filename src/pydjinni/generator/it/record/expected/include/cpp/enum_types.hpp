@@ -8,16 +8,16 @@
 #ifdef __cpp_lib_format
 #include <format>
 #endif
-#include "nested_type.hpp"
+#include "enum_type.hpp"
 
 namespace test::record {
-struct ParentType final {
-    const ::test::record::NestedType nested;
-    ParentType(::test::record::NestedType nested_)
-    : nested(std::move(nested_))
+struct EnumTypes final {
+    const ::test::record::EnumType enum_t;
+    EnumTypes(::test::record::EnumType enum_t_)
+    : enum_t(std::move(enum_t_))
     {}
 
-    friend std::ostream& operator<<(std::ostream& os, ParentType const& value);
+    friend std::ostream& operator<<(std::ostream& os, EnumTypes const& value);
 };
 
 

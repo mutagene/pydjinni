@@ -64,3 +64,7 @@ class CppConfig(BaseModel):
         default=False,
         description="Whether to generate ostream << overloads for stringifying enums and flags"
     )
+    json_serializer: str = Field(
+        default=None,
+        description="The serialization library to use for json serialization/deserialization of enums"
+    )

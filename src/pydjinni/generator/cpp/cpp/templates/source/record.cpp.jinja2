@@ -21,6 +21,9 @@ limitations under the License.
 {% if 'str' in type_def.deriving %}
 #include <string>
 {% endif %}
+{% if 'jsonable' in type_def.deriving and config.json_serializer == "nlohmann" %}
+#include <nlohmann/json.hpp>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -74,4 +77,22 @@ bool operator>=(const {{ type_def.cpp.name }}& lhs, const {{ type_def.cpp.name }
     return !(lhs < rhs);
 }
 {% endif %}
+
+{% if 'jsonable' in type_def.deriving and config.json_serializer == "nlohmann" %}
+void from_json(const nlohmann::json & j, {{ type_def.cpp.name }}& result) {
+    {% for field in type_def.fields %}
+    if(j.contains("{{field.cpp.name}}")) {
+        j.at("{{field.cpp.name}}").get_to(result.{{field.cpp.name}});
+    }
+    {% endfor %}
+}
+void to_json(nlohmann::json & j, {{ type_def.cpp.name }} const& item)  {
+    j = nlohmann::json {
+    {% for field in type_def.fields %}
+        {"{{field.cpp.name}}", item.{{field.cpp.name}}},
+    {% endfor %}
+    };
+}
+{% endif %}
+
 {% endblock %}

@@ -27,6 +27,9 @@ limitations under the License.
 #include <format>
 #endif
 {% endif %}
+{% if config.json_serializer == "nlohmann" %}
+#include <nlohmann/json.hpp>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -69,4 +72,10 @@ struct {{ type_def.cpp.name }}{{ " final" if not type_def.cpp.base_type }} {
     friend std::ostream& operator<<(std::ostream& os, {{ type_def.cpp.name }} const& value);
 {% endif %}
 };
+
+{% if 'jsonable' in type_def.deriving and config.json_serializer == "nlohmann" %}
+void from_json(const nlohmann::json& j, {{ type_def.cpp.name }}& e);
+void to_json(nlohmann::json& j, {{ type_def.cpp.name }} const& e);
+{% endif %}
+
 {% endblock %}

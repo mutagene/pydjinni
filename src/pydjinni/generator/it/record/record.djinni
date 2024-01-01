@@ -8,7 +8,7 @@ primitive_types = record {
     double_t: f64;
     string_t: string;
     date_t: date;
-} deriving (str, eq)
+} deriving (str, eq, jsonable)
 
 collection_types = record {
     int_list: list<i32>;
@@ -19,17 +19,27 @@ collection_types = record {
 
     int_int_map: map<i32, i32>;
     string_string_map: map<string, string>;
-} deriving (str)
+} deriving (str, jsonable)
 
 optional_types = record {
     int_optional: i32?;
     string_optional: string?;
-} deriving (str)
+} deriving (str, jsonable)
 
 binary_types = record {
     binary_t: binary;
     binary_optional: binary?;
 }
+
+enum_type = enum {
+    first_value;
+    second_value;
+    third_value;
+}
+
+enum_types = record {
+    enum_t: enum_type;
+} deriving(str, jsonable)
 
 base_record = record +any {
     value: i32;
@@ -52,4 +62,5 @@ helper = main interface +cpp {
     static get_cpp_base_record() -> base_record;
     static get_host_base_record(record_type: base_record) -> base_record;
     static get_nested_type(parent: parent_type) -> parent_type;
+    static get_enum_types(record_type: enum_types) -> enum_types;
 }

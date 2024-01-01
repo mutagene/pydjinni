@@ -8,6 +8,7 @@
 #include "binary_types.hpp"
 #include "base_record.hpp"
 #include "parent_type.hpp"
+#include "enum_types.hpp"
 
 namespace test::record {
 class Helper {
@@ -19,5 +20,6 @@ public:
     static ::test::record::BaseRecord get_cpp_base_record();
     static ::test::record::BaseRecord get_host_base_record(const ::test::record::BaseRecord & record_type);
     static ::test::record::ParentType get_nested_type(const ::test::record::ParentType & parent);
+    static ::test::record::EnumTypes get_enum_types(const ::test::record::EnumTypes & record_type);
 };
 }  // namespace test::record

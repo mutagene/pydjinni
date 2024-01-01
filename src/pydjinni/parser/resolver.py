@@ -19,7 +19,7 @@ import pydantic
 import yaml
 
 from pydjinni.exceptions import InputParsingException, FileNotFoundException, ApplicationException
-from pydjinni.parser.ast import TypeReference, BaseType
+from pydjinni.parser.ast import TypeReference, BaseType, Enum, Flags
 from pydjinni.parser.base_models import BaseExternalType
 
 

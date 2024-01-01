@@ -39,4 +39,6 @@ struct PrimitiveTypes final {
     friend bool operator!=(const PrimitiveTypes& lhs, const PrimitiveTypes& rhs);
     friend std::ostream& operator<<(std::ostream& os, PrimitiveTypes const& value);
 };
+
+
 }  // namespace test::record

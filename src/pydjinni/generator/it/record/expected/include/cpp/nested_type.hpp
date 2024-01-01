@@ -22,4 +22,6 @@ struct NestedType final {
 
     friend std::ostream& operator<<(std::ostream& os, NestedType const& value);
 };
+
+
 }  // namespace test::record

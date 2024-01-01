@@ -8,6 +8,10 @@
 #include <utility>
 #include <vector>
 {% endif %}
+{% if config.json_serializer == "nlohmann" %}
+#include <nlohmann/json.hpp>
+#include <algorithm>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -44,6 +48,34 @@ std::ostream& operator<<(std::ostream& os, {{ type_def.cpp.name }} value) {
         os << item;
     }
     return os;
+}
+{% endif %}
+{% if config.json_serializer == "nlohmann" %}
+
+void from_json(const nlohmann::json& j, {{ type_def.cpp.name }}& e)
+{
+    static const std::pair<{{ type_def.cpp.name }}, nlohmann::json> m[] = {
+{% for flag in type_def.flags %}
+         { {{ type_def.cpp.name }}::{{ flag.cpp.name }},"{{ flag.cpp.decl.name }}"},
+{% endfor %}
+    };
+    e = static_cast<{{ type_def.cpp.name }}>(0);
+    for(const auto& flagName : j)
+    {
+        auto it = std::find_if(std::begin(m), std::end(m),
+                               [flagName](const std::pair<{{ type_def.cpp.name }}, nlohmann::json>& ej_pair) -> bool
+        {
+            return ej_pair.second == flagName;
+        });
+        if(it != std::end(m))
+        {
+            e |= it->first;
+        }
+    }
+}
+void to_json(nlohmann::json& j, {{ type_def.cpp.name }} e)
+{
+    j = to_string_vector(e):
 }
 {% endif %}
 {% endblock %}

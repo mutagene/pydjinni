@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from pathlib import Path
 from pydjinni.generator.filters import headers, quote
 from pydjinni.generator.generator import Generator
 from pydjinni.parser.ast import (
@@ -64,19 +65,20 @@ class CppGenerator(Generator):
 
     def generate_enum(self, type_def: Enum):
         self.write_header("header/enum.hpp.jinja2", type_def=type_def)
-        if self.config.string_serialization_for_enums:
+        if self.config.string_serialization_for_enums or self.config.json_serializer:
             self.write_source("source/enum.cpp.jinja2", type_def=type_def)
 
     def generate_flags(self, type_def: Flags):
         self.write_header("header/flags.hpp.jinja2", type_def=type_def)
-        if self.config.string_serialization_for_enums:
+        if self.config.string_serialization_for_enums or self.config.json_serializer:
             self.write_source("source/flags.cpp.jinja2", type_def=type_def)
 
     def generate_record(self, type_def: Record):
         self.write_header("header/record.hpp.jinja2", type_def=type_def)
         if (Record.Deriving.eq in type_def.deriving
                 or Record.Deriving.ord in type_def.deriving
-                or Record.Deriving.str in type_def.deriving
+                or (Record.Deriving.str in type_def.deriving
+                    or Record.Deriving.jsonable in type_def.deriving)
                 and type_def.fields):
             self.write_source("source/record.cpp.jinja2", type_def=type_def)
 

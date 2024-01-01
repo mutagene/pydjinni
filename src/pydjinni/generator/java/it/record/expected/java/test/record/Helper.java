@@ -28,6 +28,9 @@ public abstract class Helper {
     public static test.record.ParentType getNestedType(test.record.ParentType parent){
         return CppProxy.getNestedType(parent);
     };
+    public static test.record.EnumTypes getEnumTypes(test.record.EnumTypes recordType){
+        return CppProxy.getEnumTypes(recordType);
+    };
     private static final class CppProxy extends Helper {
         private final long nativeRef;
         private final AtomicBoolean destroyed = new AtomicBoolean(false);
@@ -56,5 +59,6 @@ public abstract class Helper {
         public static native test.record.BaseRecord getCppBaseRecord();
         public static native test.record.BaseRecord getHostBaseRecord(test.record.BaseRecord recordType);
         public static native test.record.ParentType getNestedType(test.record.ParentType parent);
+        public static native test.record.EnumTypes getEnumTypes(test.record.EnumTypes recordType);
     }
 }

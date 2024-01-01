@@ -21,4 +21,5 @@ define_test_case(FlagsTest
     OPTIONS
         generate.cpp.namespace=test::flags_test
         generate.cpp.string_serialization_for_enums=True
+        generate.cpp.json_serializer=nlohmann
 )

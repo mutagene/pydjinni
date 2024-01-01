@@ -23,4 +23,6 @@ struct OptionalTypes final {
 
     friend std::ostream& operator<<(std::ostream& os, OptionalTypes const& value);
 };
+
+
 }  // namespace test::record

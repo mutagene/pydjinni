@@ -33,4 +33,6 @@ struct CollectionTypes final {
 
     friend std::ostream& operator<<(std::ostream& os, CollectionTypes const& value);
 };
+
+
 }  // namespace test::record

@@ -3,14 +3,18 @@
 
 {% block header %}
 #include {{ type_def.cpp.header | quote }}
-{% if config.string_serialization_for_enums %}
+{% if config.string_serialization_for_enums or config.json_serializer == "nlohmann" %}
 #include <algorithm>
 #include <string>
 #include <utility>
 {% endif %}
+{% if config.json_serializer == "nlohmann" %}
+#include <nlohmann/json.hpp>
+{% endif %}
 {% endblock %}
 
 {% block content %}
+
 namespace {
 
 inline std::string to_string( {{ type_def.cpp.name }} value) {
@@ -33,6 +37,27 @@ inline std::string to_string( {{ type_def.cpp.name }} value) {
 std::ostream& operator<<(std::ostream& os, {{ type_def.cpp.name }} value) {
     os << to_string(value);
     return os;
+}
+{% endif %}
+{% if config.json_serializer == "nlohmann" %}
+
+void from_json(const nlohmann::json& j, {{ type_def.cpp.name }}& e)
+{
+    static const std::pair<{{ type_def.cpp.name }}, nlohmann::json> m[] = { 
+{% for item in type_def.items %}
+         { {{ type_def.cpp.name }}::{{ item.cpp.name }},"{{ item.cpp.name }}"},
+{% endfor %}
+    };
+    auto it = std::find_if(std::begin(m), std::end(m),
+                           [j](const std::pair<{{type_def.cpp.name}}, nlohmann::json>& ej_pair) -> bool
+    {
+        return ej_pair.second == j;
+    });
+    e = ((it != std::end(m)) ? it : std::begin(m))->first;
+}
+void to_json(nlohmann::json& j, {{ type_def.cpp.name }} e)
+{
+    j = to_string(e);
 }
 {% endif %}
 {% endblock %}

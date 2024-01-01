@@ -21,6 +21,9 @@ limitations under the License.
 {% if config.string_serialization_for_enums %}
 #include <ostream>
 {% endif %}
+{% if config.json_serializer == "nlohmann" %}
+#include <nlohmann/json.hpp>
+{% endif %}
 {% endblock %}
 
 {% set counter = namespace(value=0) %}
@@ -77,6 +80,12 @@ constexpr {{ type_def.cpp.name }} operator~({{ type_def.cpp.name }} x) noexcept 
 {% if config.string_serialization_for_enums %}
 
 std::ostream& operator<<(std::ostream& os, {{ type_def.cpp.name }} value);
+{% endif %}
+
+{% if config.json_serializer == "nlohmann" %}
+
+void from_json(const nlohmann::json& j, {{ type_def.cpp.name }}& e);
+void to_json(nlohmann::json& j, {{ type_def.cpp.name }} e);
 {% endif %}
 
 {% endblock %}

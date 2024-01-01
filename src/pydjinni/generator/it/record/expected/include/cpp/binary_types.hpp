@@ -15,4 +15,6 @@ struct BinaryTypes final {
     {}
 
 };
+
+
 }  // namespace test::record

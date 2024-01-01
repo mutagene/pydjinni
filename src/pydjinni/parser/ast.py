@@ -87,6 +87,9 @@ class Record(ClassType):
         str = 'str', """
         String representation of a record instance (for debugging or logging).
         """
+        jsonable = 'jsonable', """
+        Instances can be written to and restored from json (c++)
+        """
 
     primitive: BaseExternalType.Primitive = BaseExternalType.Primitive.record
     fields: list[Field] = []
